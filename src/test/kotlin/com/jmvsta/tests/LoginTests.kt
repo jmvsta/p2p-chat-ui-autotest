@@ -48,15 +48,6 @@ class LoginTests {
             mock.stop()
         }
     }
-//    fun testNMsgs(n: Int) {
-//        for (i in 0 until n) {
-//            chatMessages.getOrPut("U1") { mutableListOf() }.add(
-//                Message.create(null, "2024-12-23T17:17:44", read = true,
-//                    received = true, type = "text", text = "a$i", downloaded = false
-//                )
-//            )
-//        }
-//    }
 
     @BeforeEach
     fun setUp() {

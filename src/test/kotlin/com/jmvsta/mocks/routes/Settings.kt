@@ -3,7 +3,6 @@ package com.jmvsta.mocks.routes
 import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.FormData
 import com.jmvsta.mocks.MockServer
-import com.jmvsta.parseFormData
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond

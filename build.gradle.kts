@@ -31,7 +31,6 @@ dependencies {
     testImplementation("org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
-    testImplementation("org.apache.httpcomponents.client5:httpclient5:5.2")
 }
 
 tasks.test {

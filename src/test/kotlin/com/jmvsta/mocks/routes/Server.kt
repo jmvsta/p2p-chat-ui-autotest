@@ -1,6 +1,5 @@
 package com.jmvsta.mocks.routes
 
-import com.jmvsta.entities.MessageDto
 import com.jmvsta.entities.Server
 import com.jmvsta.mocks.MockServer
 import io.ktor.http.HttpStatusCode
