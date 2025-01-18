@@ -51,26 +51,6 @@ data class MessageDto(@SerialName("chat_id") val chatId: String, val text: Strin
 data class StatusDto(@SerialName("log_prefix") val logPrefix: String, val inited: Boolean)
 
 @Serializable
-data class ServersDto(val servers: Server)
-
-@Serializable
-data class Server(
-    val id: Int,
-    val addr: String,
-    val status: String,
-    @SerialName("last_check") val lastCheck: String?,
-) {
-    companion object {
-        private var currentId = 0
-
-        fun create(addr: String, status: String, lastCheck: String? = LocalDateTime.now().format(dateFormat)): Server {
-            val newId = currentId++
-            return Server(newId, addr, status, lastCheck)
-        }
-    }
-}
-
-@Serializable
 data class MessagesListDto(val msgs: List<Message>)
 
 @Serializable

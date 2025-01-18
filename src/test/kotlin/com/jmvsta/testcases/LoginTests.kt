@@ -1,67 +1,41 @@
-package com.jmvsta.tests
+package com.jmvsta.testcases
 
 import com.jmvsta.computeSHA3_512
 import com.jmvsta.entities.FormData
 import com.jmvsta.mocks.MockServer
 import com.jmvsta.mocks.modules.CallTracker
-import com.jmvsta.poms.LoginSegment
+import com.jmvsta.poms.Login
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.json.Json
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.chrome.ChromeDriver
 import java.nio.file.Paths
 
-class LoginTests {
-
-    companion object {
-        private lateinit var driver: WebDriver
-
-        private lateinit var loginSegment: LoginSegment
-        private lateinit var mock: MockServer
-
-        @BeforeAll
-        @JvmStatic
-        fun init() {
-            mock = MockServer(8080)
-            mock.start()
-
-            driver = ChromeDriver()
-            driver.get("http://localhost:5173")
-            val jsExecutor = driver as JavascriptExecutor
-            jsExecutor.executeScript("localStorage.removeItem('server');")
-
-            loginSegment = LoginSegment(driver)
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun tearDown() {
-            driver.quit()
-            mock.stop()
-        }
-    }
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+open class LoginTests(driver: WebDriver, mock: MockServer): TestBase<Login>(driver, mock, Login(driver)) {
 
     @BeforeEach
     fun setUp() {
         CallTracker.clearCalls()
         driver.get("http://localhost:5173")
+        (driver as JavascriptExecutor).executeScript("localStorage.removeItem('server')")
     }
 
     @Test
-    fun `should login with correct credentials`() {
-        loginSegment.provideUsername("testUser")
-        loginSegment.providePassword("testPassword")
+    @DisplayName("should login with correct credentials")
+    fun loginSuccess() {
+        pom.provideUsername("testUser")
+        pom.providePassword("testPassword")
         val imagePath = Paths.get("src/test/resources/test.jpg").toAbsolutePath().toString()
-        loginSegment.provideFile(imagePath)
-        loginSegment.clickLoginButton()
+        pom.provideFile(imagePath)
+        pom.clickLoginButton()
 
         Thread.sleep(1000)
 
@@ -70,7 +44,6 @@ class LoginTests {
 
         assert(initPwdCall != null)
         assert(initPwdCall?.queryParameters?.get("pwd").equals(computeSHA3_512("testPassword")))
-
 
         val createSettingsCall = calls.find { it.uri.contains("/api/settings/me/") && it.method == HttpMethod.Post }
 
@@ -84,11 +57,12 @@ class LoginTests {
     }
 
     @Test
-    fun `should throw error on no login`() {
-        loginSegment.providePassword("testPassword")
+    @DisplayName("should throw error on no login")
+    fun noLoginError() {
+        pom.providePassword("testPassword")
         val imagePath = Paths.get("src/test/resources/test.jpg").toAbsolutePath().toString()
-        loginSegment.provideFile(imagePath)
-        loginSegment.clickLoginButton()
+        pom.provideFile(imagePath)
+        pom.clickLoginButton()
 
         Thread.sleep(1000)
 
@@ -102,11 +76,12 @@ class LoginTests {
     }
 
     @Test
-    fun `should throw error on no password`() {
-        loginSegment.provideUsername("testUser")
+    @DisplayName("should throw error on no password")
+    fun noPasswordError() {
+        pom.provideUsername("testUser")
         val imagePath = Paths.get("src/test/resources/test.jpg").toAbsolutePath().toString()
-        loginSegment.provideFile(imagePath)
-        loginSegment.clickLoginButton()
+        pom.provideFile(imagePath)
+        pom.clickLoginButton()
 
         Thread.sleep(1000)
 
@@ -120,10 +95,11 @@ class LoginTests {
     }
 
     @Test
-    fun `should throw error on no pic`() {
-        loginSegment.provideUsername("testUser")
-        loginSegment.providePassword("testPassword")
-        loginSegment.clickLoginButton()
+    @DisplayName("should throw error on no pic")
+    fun noPicError() {
+        pom.provideUsername("testUser")
+        pom.providePassword("testPassword")
+        pom.clickLoginButton()
 
         Thread.sleep(1000)
 
