@@ -16,6 +16,7 @@ dependencies {
     val kotlinVersion = "2.1.0"
     val seleniumVersion = "4.27.0"
     val junitVersion = "5.11.4"
+    val platformVersion = "1.11.4"
     val shaVersion = "1.78"
 
     testImplementation(kotlin("test"))
@@ -30,6 +31,7 @@ dependencies {
     testImplementation("org.seleniumhq.selenium:selenium-java:$seleniumVersion")
     testImplementation("org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("org.junit.platform:junit-platform-suite:$platformVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
 }
 

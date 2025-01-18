@@ -14,10 +14,10 @@ import io.ktor.server.netty.NettyApplicationEngine
 class MockServer(private val port: Int = 8080) {
 
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
-    internal val chatMessages: MutableMap<String, MutableList<Message>> = mutableMapOf()
-    internal val servers: MutableList<Server> = mutableListOf()
-    internal val apiInited: StatusDto = StatusDto("test", false)
-    internal lateinit var me: ExtUser
+    var chatMessages: MutableMap<String, MutableList<Message>> = mutableMapOf()
+    var servers: MutableList<Server> = mutableListOf()
+    var apiInited: StatusDto = StatusDto("test", false)
+    lateinit var me: ExtUser
 
     fun start() {
         server = embeddedServer(Netty, port = port) {
@@ -29,5 +29,19 @@ class MockServer(private val port: Int = 8080) {
         server?.stop(1000, 1000)
         server = null
     }
+}
+
+fun main() {
+    val mockServer = MockServer(8080)
+    mockServer.start()
+
+    println("Mock server is running on port 8080. Press Ctrl+C to stop.")
+
+    Runtime.getRuntime().addShutdownHook(Thread {
+        println("Stopping the server...")
+        mockServer.stop()
+    })
+
+    Thread.currentThread().join()
 }
 

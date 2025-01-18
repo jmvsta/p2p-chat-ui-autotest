@@ -3,7 +3,7 @@ package com.jmvsta.poms
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 
-class LoginSegment (private val driver: WebDriver) {
+class Login(private val driver: WebDriver) {
 
     private val usernameInput = By.id("login-input")
     private val passwordInput = By.id("password-input")
