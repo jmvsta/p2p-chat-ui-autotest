@@ -1,8 +1,10 @@
 package com.jmvsta.mocks.routes
 
+import com.jmvsta.entities.Message
 import com.jmvsta.entities.MessageDto
 import com.jmvsta.entities.MessagesListDto
 import com.jmvsta.mocks.MockServer
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -18,8 +20,8 @@ fun Route.messagesRoute(mock: MockServer) {
             val jsonString = call.receiveText()
             val message = Json.decodeFromString<MessageDto>(jsonString)
             val list = mock.chatMessages.getOrPut(message.chatId) { mutableListOf() }
-            list.add(com.jmvsta.entities.Message.toDto(message))
-            call.respond(io.ktor.http.HttpStatusCode.OK)
+            list.add(Message.toDto(message))
+            call.respond(HttpStatusCode.OK)
         }
         get("/chat/") {
             val chatId = call.request.queryParameters["chat_id"]
@@ -28,7 +30,7 @@ fun Route.messagesRoute(mock: MockServer) {
             val messages =
                 mock.chatMessages.getOrDefault(chatId, listOf()).sortedByDescending { it.id }.drop(offset)
                     .take(limit)
-            call.respond(io.ktor.http.HttpStatusCode.OK, Json.encodeToString(MessagesListDto(messages)))
+            call.respond(HttpStatusCode.OK, Json.encodeToString(MessagesListDto(messages)))
         }
     }
 }

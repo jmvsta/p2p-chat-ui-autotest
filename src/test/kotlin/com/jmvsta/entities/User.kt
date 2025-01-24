@@ -6,7 +6,7 @@ import java.util.UUID
 
 @Serializable
 data class ExtUser(
-    val id: String,
+    val id: Int,
     @SerialName("ext_id") val extId: String?,
     val name: String,
     @SerialName("key_code") val keyCode: String?,
@@ -16,12 +16,15 @@ data class ExtUser(
     val activity: String?,
 ) {
     companion object {
+        private var currentId: Int = 0
+
         fun create(name: String, keyCode: String?, hkeyCode: String?, pic: String, status: String?): ExtUser {
-            return ExtUser(UUID.randomUUID().toString(), null, name, keyCode, hkeyCode, pic, status, null)
+            return ExtUser(currentId++, UUID.randomUUID().toString(), name, keyCode, hkeyCode, pic, status, null)
         }
     }
 }
 
+@Serializable data class UserListDto(val users: MutableList<ExtUser>)
 @Serializable data class UserAddDto(val name: String, val contact: String)
 @Serializable data class UserUpdateMeDto(val name: String, val pic: String)
 @Serializable data class UserUpdateDto(val id: Int, val name: String, val status: String)

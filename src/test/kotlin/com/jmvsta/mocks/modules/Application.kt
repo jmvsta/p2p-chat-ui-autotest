@@ -1,6 +1,5 @@
 package com.jmvsta.mocks.modules
 
-import kotlinx.serialization.encodeToString
 import com.jmvsta.entities.FormData
 import com.jmvsta.mocks.MockServer
 import com.jmvsta.mocks.routes.apiRoute
@@ -28,6 +27,7 @@ import io.ktor.util.AttributeKey
 import io.ktor.util.toMap
 import io.ktor.utils.io.readRemaining
 import kotlinx.io.readByteArray
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.slf4j.event.Level
 
@@ -59,7 +59,7 @@ fun Application.module(mock: MockServer = MockServer()) {
     }
 
     install(CallLogging) {
-        level = Level.INFO
+        level = Level.DEBUG
         filter { true }
     }
 

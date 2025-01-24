@@ -18,7 +18,6 @@ fun Route.downloadsRoute() {
             call.respond(HttpStatusCode.OK, "File download stopped for msg_id=$msgId")
         }
         post("/status/") {
-            val msgId = call.request.queryParameters["msg_id"]
             call.respond(HttpStatusCode.OK, """
                 {
                  "msg_id": -1,

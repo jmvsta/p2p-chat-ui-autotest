@@ -9,9 +9,9 @@ import io.ktor.server.routing.route
 
 fun Route.apiRoute(mock: MockServer) {
     route("/api") {
-        usersRoute()
+        usersRoute(mock)
         settingsRoute(mock)
-        chatsRoute()
+        chatsRoute(mock)
         serversRoute(mock)
         messagesRoute(mock)
         downloadsRoute()

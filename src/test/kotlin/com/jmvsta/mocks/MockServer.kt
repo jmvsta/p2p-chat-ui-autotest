@@ -1,5 +1,6 @@
 package com.jmvsta.mocks
 
+import com.jmvsta.entities.Chat
 import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.Message
 import com.jmvsta.entities.Server
@@ -17,6 +18,8 @@ class MockServer(private val port: Int = 8080) {
     var chatMessages: MutableMap<String, MutableList<Message>> = mutableMapOf()
     var servers: MutableList<Server> = mutableListOf()
     var apiInited: StatusDto = StatusDto("test", false)
+    var contacts: MutableList<ExtUser> = mutableListOf()
+    var chats: MutableList<Chat> = mutableListOf()
     lateinit var me: ExtUser
 
     fun start() {
@@ -33,6 +36,30 @@ class MockServer(private val port: Int = 8080) {
 
 fun main() {
     val mockServer = MockServer(8080)
+    mockServer.apiInited = StatusDto("test", true)
+    mockServer.servers.add(Server.create("http://localhost:8080", "active"))
+    mockServer.me = ExtUser.create("me", "code", "hkeyCode", "", "")
+    val user1 = ExtUser.create(
+        name = "test1", pic = "test",
+        keyCode = null,
+        hkeyCode = null,
+        status = null
+    )
+    val user2 = ExtUser.create(
+        name = "test2", pic = "test",
+        keyCode = null,
+        hkeyCode = null,
+        status = null
+    )
+
+    mockServer.contacts.addAll(mutableListOf(user1, user2))
+
+    val chatTest1 = Chat.create("test1", mutableListOf(user1), true)
+    val chatTest2 = Chat.create("test2", mutableListOf(user2), true)
+    val groupChat1 = Chat.create("groupchat1", mutableListOf(user1), false)
+
+    mockServer.chats.addAll(mutableListOf(chatTest1, chatTest2, groupChat1))
+
     mockServer.start()
 
     println("Mock server is running on port 8080. Press Ctrl+C to stop.")

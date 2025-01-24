@@ -18,6 +18,7 @@ dependencies {
     val junitVersion = "5.11.4"
     val platformVersion = "1.11.4"
     val shaVersion = "1.78"
+    val logbackVersion = "1.5.16"
 
     testImplementation(kotlin("test"))
     testImplementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -27,6 +28,7 @@ dependencies {
     testImplementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
     testImplementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("org.bouncycastle:bcprov-jdk15to18:$shaVersion")
     testImplementation("org.seleniumhq.selenium:selenium-java:$seleniumVersion")
     testImplementation("org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion")
@@ -38,6 +40,11 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+tasks.withType<ProcessResources> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 kotlin {
     jvmToolchain(17)
 }

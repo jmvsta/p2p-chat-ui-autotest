@@ -1,15 +1,20 @@
 package com.jmvsta.mocks.routes
 
+import com.jmvsta.entities.UserListDto
+import com.jmvsta.mocks.MockServer
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-fun Route.usersRoute() {
+fun Route.usersRoute(mock: MockServer) {
     route("/users") {
         post("/") {
             val body = call.receiveText()
@@ -19,15 +24,16 @@ fun Route.usersRoute() {
             val body = call.receiveText()
             call.respond(HttpStatusCode.OK, "ok")
         }
+        delete("/") {
+            val id = call.request.queryParameters["id"]!!.toInt()
+            mock.contacts.removeIf { contact -> contact.id == id }
+            call.respond(HttpStatusCode.OK, "ok")
+        }
         post("/decode/") {
             call.respond(HttpStatusCode.OK, "User decoded")
         }
         get("/list/") {
-            call.respond(
-                HttpStatusCode.OK, """
-                            {"users":[{"id":1,"ext_id":"+QKyZh1n/KA","key_code":"D7QMF3kZBciK4dmsp7lSSF9ZaXOHUswVKKa136e1jtU=","hkey_code":"Srithik Akeira 14","name":"test2412018081","status":"confirmed","activity":"offline"}]}
-                        """.trimIndent()
-            )
+            call.respond(HttpStatusCode.OK, Json.encodeToString(UserListDto(mock.contacts)))
         }
         get("/my-contact/") {
             call.respond(HttpStatusCode.OK, "User contact")
