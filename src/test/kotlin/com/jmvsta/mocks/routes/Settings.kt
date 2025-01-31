@@ -4,7 +4,6 @@ import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.FormData
 import com.jmvsta.mocks.MockServer
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
@@ -18,7 +17,6 @@ import kotlinx.serialization.json.Json
 fun Route.settingsRoute(mock: MockServer) {
     route("/settings") {
         get("/me/") {
-            val body = call.receiveText()
             call.respond(HttpStatusCode.OK, Json.encodeToString(mock.me).trimIndent())
         }
 

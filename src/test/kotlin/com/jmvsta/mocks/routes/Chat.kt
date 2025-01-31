@@ -29,12 +29,14 @@ fun Route.chatsRoute(mock: MockServer) {
         post("/") {
             val jsonString = call.attributes.getOrNull(AttributeKey<String>("cachedBody"))!!
             val chat = Json.decodeFromString<ChatDto>(jsonString)
-            val participants = chat.participants.mapNotNull  { id ->
+            val participants = chat.participants.mapNotNull { id ->
                 mock.contacts.find { contact ->
                     contact.id == id
                 }
             }.toMutableList()
-            mock.chats.add(Chat.create(chat.name, participants, false))
+            mock.chats.add(
+                Chat.create(chat.name, participants, false)
+            )
             call.respond(HttpStatusCode.OK, "ok")
         }
     }

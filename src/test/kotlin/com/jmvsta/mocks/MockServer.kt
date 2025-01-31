@@ -12,7 +12,7 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 
 
-class MockServer(private val port: Int = 8080) {
+class MockServer(val port: Int = 8080) {
 
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
     var chatMessages: MutableMap<String, MutableList<Message>> = mutableMapOf()
@@ -24,7 +24,7 @@ class MockServer(private val port: Int = 8080) {
 
     fun start() {
         server = embeddedServer(Netty, port = port) {
-            module(this@MockServer)
+            module(this@MockServer, "static$port")
         }.start(wait = false)
     }
 
@@ -34,41 +34,43 @@ class MockServer(private val port: Int = 8080) {
     }
 }
 
-fun main() {
-    val mockServer = MockServer(8080)
-    mockServer.apiInited = StatusDto("test", true)
-    mockServer.servers.add(Server.create("http://localhost:8080", "active"))
-    mockServer.me = ExtUser.create("me", "code", "hkeyCode", "", "")
-    val user1 = ExtUser.create(
-        name = "test1", pic = "test",
-        keyCode = null,
-        hkeyCode = null,
-        status = null
-    )
-    val user2 = ExtUser.create(
-        name = "test2", pic = "test",
-        keyCode = null,
-        hkeyCode = null,
-        status = null
-    )
-
-    mockServer.contacts.addAll(mutableListOf(user1, user2))
-
-    val chatTest1 = Chat.create("test1", mutableListOf(user1), true)
-    val chatTest2 = Chat.create("test2", mutableListOf(user2), true)
-    val groupChat1 = Chat.create("groupchat1", mutableListOf(user1), false)
-
-    mockServer.chats.addAll(mutableListOf(chatTest1, chatTest2, groupChat1))
-
-    mockServer.start()
-
-    println("Mock server is running on port 8080. Press Ctrl+C to stop.")
-
-    Runtime.getRuntime().addShutdownHook(Thread {
-        println("Stopping the server...")
-        mockServer.stop()
-    })
-
-    Thread.currentThread().join()
-}
+//fun main() {
+//    val mockServer = MockServerManager.create(8080)
+//
+//    mockServer.apiInited = StatusDto("test", true)
+//    mockServer.servers.add(Server.create("http://localhost:8080", "active"))
+//    mockServer.me = ExtUser.create("me", "code", "hkeyCode", "", "")
+//    val user1 = ExtUser.create(
+//        name = "test1", pic = "test",
+//        keyCode = null,
+//        hkeyCode = null,
+//        status = null
+//    )
+//    val user2 = ExtUser.create(
+//        name = "test2", pic = "test",
+//        keyCode = null,
+//        hkeyCode = null,
+//        status = null
+//    )
+//
+//    mockServer.contacts.addAll(mutableListOf(user1, user2))
+//
+//    val chatTest1 = Chat.create("test1", mutableListOf(user1), true)
+//    val chatTest2 = Chat.create("test2", mutableListOf(user2), true)
+//    val groupChat1 = Chat.create("groupchat1", mutableListOf(user1), false)
+//
+//    mockServer.chats.addAll(mutableListOf(chatTest1, chatTest2, groupChat1))
+//
+//    val mockServer1 = MockServerManager.create(8081)
+//
+//    mockServer1.contacts.addAll(mutableListOf(user1, user2))
+//    mockServer1.chats.addAll(mutableListOf(chatTest1, chatTest2, groupChat1))
+//
+//    Runtime.getRuntime().addShutdownHook(Thread {
+//        println("Stopping servers...")
+//        MockServerManager.detach(8080, 8081)
+//    })
+//
+//    Thread.currentThread().join()
+//}
 

@@ -18,13 +18,19 @@ data class ExtUser(
     companion object {
         private var currentId: Int = 0
 
-        fun create(name: String, keyCode: String?, hkeyCode: String?, pic: String, status: String?): ExtUser {
+        fun create(
+            name: String, keyCode: String? = null, hkeyCode: String? = null, pic: String, status: String? = null,
+        ): ExtUser {
             return ExtUser(currentId++, UUID.randomUUID().toString(), name, keyCode, hkeyCode, pic, status, null)
         }
     }
 }
 
-@Serializable data class UserListDto(val users: MutableList<ExtUser>)
-@Serializable data class UserAddDto(val name: String, val contact: String)
-@Serializable data class UserUpdateMeDto(val name: String, val pic: String)
-@Serializable data class UserUpdateDto(val id: Int, val name: String, val status: String)
+@Serializable
+data class UserListDto(val users: MutableList<ExtUser>)
+@Serializable
+data class UserAddDto(val name: String, val contact: String)
+@Serializable
+data class UserUpdateMeDto(val name: String, val pic: String)
+@Serializable
+data class UserUpdateDto(val id: Int, val name: String, val status: String)

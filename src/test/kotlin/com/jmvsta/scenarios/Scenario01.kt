@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestInstance
 import org.openqa.selenium.chrome.ChromeDriver
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class Scenario01: Scenario() {
+class Scenario01: Scenario {
 
     private lateinit var driver: ChromeDriver
     private lateinit var mock: MockServer
@@ -41,7 +41,7 @@ class Scenario01: Scenario() {
             DynamicTest.dynamicTest("Tests login") {
                 runWithLifecycle(loginTests) { loginTests.loginSuccess() }
             },
-            DynamicTest.dynamicTest(" Test select server") {
+            DynamicTest.dynamicTest("Test select server") {
                 runWithLifecycle(serverTests) { serverTests.selectFirstServerCorrectly() }
             }
         )

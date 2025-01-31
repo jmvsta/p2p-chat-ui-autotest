@@ -10,7 +10,7 @@ import org.junit.jupiter.api.TestInstance
 import org.openqa.selenium.chrome.ChromeDriver
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class Scenario00 : Scenario() {
+class Scenario00 : Scenario {
 
     private val driver: ChromeDriver = ChromeDriver()
     private val mock: MockServer = MockServerManager.create(8080)

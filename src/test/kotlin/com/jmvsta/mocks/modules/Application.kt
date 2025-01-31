@@ -13,6 +13,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.call
 import io.ktor.server.application.install
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
@@ -52,7 +53,11 @@ object CallTracker {
     }
 }
 
-fun Application.module(mock: MockServer = MockServer()) {
+fun Application.module(mock: MockServer = MockServer(), basePackage: String) {
+
+    routing {
+        staticResources("", basePackage, index = "index.html")
+    }
 
     install(ContentNegotiation) {
         json()

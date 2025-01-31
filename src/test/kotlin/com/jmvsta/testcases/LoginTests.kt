@@ -19,13 +19,14 @@ import org.openqa.selenium.WebDriver
 import java.nio.file.Paths
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class LoginTests(driver: WebDriver, mock: MockServer): TestBase<Login>(driver, mock, Login(driver)) {
+open class LoginTests(driver: WebDriver, mock: MockServer): TestCase<Login>(driver, mock, Login(driver)) {
 
     @BeforeEach
     fun setUp() {
         CallTracker.clearCalls()
-        driver.get("http://localhost:5173")
+        driver.get("http://localhost:${mock.port}")
         (driver as JavascriptExecutor).executeScript("localStorage.removeItem('server')")
+        driver.get("http://localhost:${mock.port}")
     }
 
     @Test

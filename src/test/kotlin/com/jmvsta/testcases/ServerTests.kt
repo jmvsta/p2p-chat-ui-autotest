@@ -18,7 +18,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class ServerTests(driver: WebDriver, mock: MockServer) : TestBase<Servers>(driver, mock, Servers(driver)) {
+open class ServerTests(driver: WebDriver, mock: MockServer) : TestCase<Servers>(driver, mock, Servers(driver)) {
 
     @BeforeEach
     fun setUp() {
@@ -29,9 +29,10 @@ open class ServerTests(driver: WebDriver, mock: MockServer) : TestBase<Servers>(
             Server.create("localhost:1", "active")
         )
         Thread.sleep(6000)
-        driver.get("http://localhost:5173")
+        driver.get("http://localhost:${mock.port}")
         val jsExecutor = driver as JavascriptExecutor
         jsExecutor.executeScript("localStorage.removeItem('server');")
+        driver.get("http://localhost:${mock.port}")
     }
 
     @Test

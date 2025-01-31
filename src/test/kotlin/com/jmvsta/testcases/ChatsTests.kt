@@ -11,7 +11,7 @@ import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class ChatsTests(driver: WebDriver, mock: MockServer): TestBase<Chats>(driver, mock, Chats(driver)) {
+open class ChatsTests(driver: WebDriver, mock: MockServer): TestCase<Chats>(driver, mock, Chats(driver)) {
 
     @BeforeEach
     fun setUp() {

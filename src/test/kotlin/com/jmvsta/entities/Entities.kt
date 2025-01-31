@@ -45,7 +45,7 @@ data class Message(
 data class FormData(val formData: MutableMap<String, String>, val files: MutableList<String>)
 
 @Serializable
-data class MessageDto(@SerialName("chat_id") val chatId: String, val text: String)
+data class MessageDto(@SerialName("chat_id") val chatId: String, val text: String, val file: String)
 
 @Serializable
 data class StatusDto(@SerialName("log_prefix") val logPrefix: String, val inited: Boolean)
