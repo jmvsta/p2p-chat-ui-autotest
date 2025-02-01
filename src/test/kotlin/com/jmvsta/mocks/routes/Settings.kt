@@ -2,7 +2,7 @@ package com.jmvsta.mocks.routes
 
 import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.FormData
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -14,7 +14,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
-fun Route.settingsRoute(mock: MockServer) {
+fun Route.settingsRoute(mock: MockClient) {
     route("/settings") {
         get("/me/") {
             call.respond(HttpStatusCode.OK, Json.encodeToString(mock.me).trimIndent())

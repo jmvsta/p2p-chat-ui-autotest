@@ -1,7 +1,7 @@
 package com.jmvsta.scenarios
 
+import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.MockServer
-import com.jmvsta.mocks.MockServerManager
 import com.jmvsta.testcases.LoginTests
 import com.jmvsta.testcases.ServerTests
 import org.junit.jupiter.api.AfterAll
@@ -16,22 +16,22 @@ import org.openqa.selenium.chrome.ChromeDriver
 class Scenario01: Scenario {
 
     private lateinit var driver: ChromeDriver
-    private lateinit var mock: MockServer
+    private val mockServer: MockServer = MockServer()
+    private val mockClient: MockClient = mockServer.addClients("http://localhost:8080")[0]
     private lateinit var loginTests: LoginTests
     private lateinit var serverTests: ServerTests
 
     @BeforeAll
     fun setUp() {
         driver = ChromeDriver()
-        mock = MockServerManager.create(8080)
-        loginTests = LoginTests(driver, mock)
-        serverTests = ServerTests(driver, mock)
+        loginTests = LoginTests(driver, mockClient)
+        serverTests = ServerTests(driver, mockClient)
     }
 
     @AfterAll
     fun tearDown() {
         driver.quit()
-        MockServerManager.detach(8080)
+        mockServer.detachClients("http://localhost:8080")
     }
 
     @TestFactory

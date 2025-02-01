@@ -4,8 +4,9 @@ import com.jmvsta.entities.Chat
 import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.Server
 import com.jmvsta.entities.StatusDto
+import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.MockServer
-import com.jmvsta.mocks.MockServerManager
+import com.jmvsta.mocks.service.GithubApiService
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -16,10 +17,13 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Scenario02 : Scenario {
 
+    private val githubApiService = GithubApiService()
     private lateinit var driver1: ChromeDriver
     private lateinit var driver2: ChromeDriver
-    private lateinit var mock1: MockServer
-    private lateinit var mock2: MockServer
+    private lateinit var mock1: MockClient
+    private lateinit var mock2: MockClient
+    private val mockServer = MockServer()
+    private val hosts = arrayOf("http://localhost:8080", "http://localhost:8081")
 
 
 //    fun startChromeDriver(port: Int, userDataDir: String): WebDriver {
@@ -40,7 +44,8 @@ class Scenario02 : Scenario {
     fun setUp() {
         driver1 = ChromeDriver()
         driver2 = ChromeDriver()
-        mock1 = MockServerManager.create(8080)
+        val clients = mockServer.addClients(*hosts)
+        mock1 = clients[0]
         mock1.apiInited = StatusDto("test0", true)
         mock1.servers.add(Server.create("http://testserver:8080", "active"))
         mock1.me = ExtUser.create("me", "code", "hkeyCode", "", "")
@@ -54,7 +59,7 @@ class Scenario02 : Scenario {
 
         mock1.chats.addAll(mutableListOf(chatTest1))
 
-        mock2 = MockServerManager.create(8081)
+        mock2 = clients[1]
         mock2.apiInited = StatusDto("test1", true)
         mock2.servers.add(Server.create("http://testserver:8080", "active"))
         mock2.contacts.addAll(mutableListOf(user1))
@@ -66,13 +71,15 @@ class Scenario02 : Scenario {
     fun tearDown() {
         driver1.quit()
         driver2.quit()
-        MockServerManager.detach(8080, 8081)
+        mockServer.detachClients(*hosts)
     }
 
     @Test
     fun test() {
         driver1.get("http://localhost:8080")
         driver2.get("http://localhost:8081")
+
+
         Thread.sleep(10000)
     }
 

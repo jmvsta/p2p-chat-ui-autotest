@@ -1,6 +1,6 @@
 package com.jmvsta.testcases
 
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.modules.CallTracker
 import com.jmvsta.poms.Chats
 import org.junit.jupiter.api.BeforeEach
@@ -11,7 +11,7 @@ import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class ChatMenuTests(driver: WebDriver, mock: MockServer): TestCase<Chats>(driver, mock, Chats(driver)) {
+open class ChatMenuTests(driver: WebDriver, mock: MockClient): TestCase<Chats>(driver, mock, Chats(driver)) {
 
     @BeforeEach
     fun setUp() {

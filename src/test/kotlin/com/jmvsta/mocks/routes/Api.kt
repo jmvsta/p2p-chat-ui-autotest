@@ -1,13 +1,13 @@
 package com.jmvsta.mocks.routes
 
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 
-fun Route.apiRoute(mock: MockServer) {
+fun Route.apiRoute(mock: MockClient) {
     route("/api") {
         usersRoute(mock)
         settingsRoute(mock)

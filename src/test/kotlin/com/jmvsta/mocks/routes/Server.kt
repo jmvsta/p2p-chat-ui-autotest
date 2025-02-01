@@ -2,7 +2,7 @@ package com.jmvsta.mocks.routes
 
 import com.jmvsta.entities.Server
 import com.jmvsta.entities.ServersDto
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -13,7 +13,7 @@ import io.ktor.server.routing.route
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun Route.serversRoute(mock: MockServer) {
+fun Route.serversRoute(mock: MockClient) {
     route("/servers") {
         post("/") {
             mock.servers.add(Server.create("http://localhost:8080", "active"))

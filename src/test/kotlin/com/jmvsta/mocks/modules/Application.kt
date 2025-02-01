@@ -1,7 +1,7 @@
 package com.jmvsta.mocks.modules
 
 import com.jmvsta.entities.FormData
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.routes.apiRoute
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -53,7 +53,7 @@ object CallTracker {
     }
 }
 
-fun Application.module(mock: MockServer = MockServer(), basePackage: String) {
+fun Application.module(mock: MockClient, basePackage: String) {
 
     routing {
         staticResources("", basePackage, index = "index.html")

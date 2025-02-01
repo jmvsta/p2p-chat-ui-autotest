@@ -2,7 +2,7 @@ package com.jmvsta.testcases
 
 import com.jmvsta.computeSHA3_512
 import com.jmvsta.entities.FormData
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.modules.CallTracker
 import com.jmvsta.poms.Login
 import io.ktor.http.HttpMethod
@@ -19,14 +19,14 @@ import org.openqa.selenium.WebDriver
 import java.nio.file.Paths
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class LoginTests(driver: WebDriver, mock: MockServer): TestCase<Login>(driver, mock, Login(driver)) {
+open class LoginTests(driver: WebDriver, mock: MockClient): TestCase<Login>(driver, mock, Login(driver)) {
 
     @BeforeEach
     fun setUp() {
         CallTracker.clearCalls()
-        driver.get("http://localhost:${mock.port}")
+        driver.get(mock.url)
         (driver as JavascriptExecutor).executeScript("localStorage.removeItem('server')")
-        driver.get("http://localhost:${mock.port}")
+        driver.get(mock.url)
     }
 
     @Test

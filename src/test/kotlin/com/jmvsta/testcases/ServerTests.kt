@@ -2,7 +2,7 @@ package com.jmvsta.testcases
 
 import com.jmvsta.entities.Server
 import com.jmvsta.entities.StatusDto
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.modules.CallTracker
 import com.jmvsta.poms.Servers
 import io.ktor.http.HttpMethod
@@ -18,7 +18,7 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-open class ServerTests(driver: WebDriver, mock: MockServer) : TestCase<Servers>(driver, mock, Servers(driver)) {
+open class ServerTests(driver: WebDriver, mock: MockClient) : TestCase<Servers>(driver, mock, Servers(driver)) {
 
     @BeforeEach
     fun setUp() {
@@ -29,10 +29,10 @@ open class ServerTests(driver: WebDriver, mock: MockServer) : TestCase<Servers>(
             Server.create("localhost:1", "active")
         )
         Thread.sleep(6000)
-        driver.get("http://localhost:${mock.port}")
+        driver.get(mock.url)
         val jsExecutor = driver as JavascriptExecutor
         jsExecutor.executeScript("localStorage.removeItem('server');")
-        driver.get("http://localhost:${mock.port}")
+        driver.get(mock.url)
     }
 
     @Test

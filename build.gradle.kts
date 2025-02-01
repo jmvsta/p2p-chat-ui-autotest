@@ -19,6 +19,7 @@ dependencies {
     val platformVersion = "1.11.4"
     val shaVersion = "1.78"
     val logbackVersion = "1.5.16"
+    val springVersion = "3.4.2"
 
     testImplementation(kotlin("test"))
     testImplementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -35,6 +36,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("org.junit.platform:junit-platform-suite:$platformVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
+    testImplementation("io.ktor:ktor-client-cio:$ktorVersion")
+    testImplementation("io.ktor:ktor-client:$ktorVersion")
 }
 
 tasks.test {

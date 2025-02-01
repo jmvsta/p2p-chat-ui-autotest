@@ -3,7 +3,7 @@ package com.jmvsta.mocks.routes
 import com.jmvsta.entities.Chat
 import com.jmvsta.entities.ChatDto
 import com.jmvsta.entities.ChatListDto
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.mocks.MockClient
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -14,7 +14,7 @@ import io.ktor.util.AttributeKey
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun Route.chatsRoute(mock: MockServer) {
+fun Route.chatsRoute(mock: MockClient) {
     route("/chats") {
         get("/list/") {
             val offset = call.request.queryParameters["offset"]
