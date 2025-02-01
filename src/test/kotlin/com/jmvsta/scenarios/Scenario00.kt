@@ -2,6 +2,7 @@ package com.jmvsta.scenarios
 
 import com.jmvsta.mocks.MockClient
 import com.jmvsta.mocks.MockServer
+import com.jmvsta.testcases.ChatsTests
 import com.jmvsta.testcases.LoginTests
 import com.jmvsta.testcases.ServerTests
 import org.junit.jupiter.api.AfterAll
@@ -16,10 +17,12 @@ class Scenario00 : Scenario {
     private val mockServer: MockServer = MockServer()
     private val mockClient: MockClient = mockServer.addClients("http://localhost:8080")[0]
 
+   @Nested
+   inner class Scenario00LoginTests : LoginTests(driver, mockClient)
+   @Nested
+   inner class Scenario00ServerTests : ServerTests(driver, mockClient)
     @Nested
-    inner class Scenario00LoginTests : LoginTests(driver, mockClient)
-    @Nested
-    inner class Scenario00ServerTests : ServerTests(driver, mockClient)
+    inner class Scenario00ChatTests : ChatsTests(driver, mockClient)
 
     @AfterAll
     fun tearDown() {

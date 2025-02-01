@@ -30,7 +30,7 @@ class MockClient(val url: String) {
         val uri = URI(url)
         fileSystemService.createStatic(url)
         server = embeddedServer(Netty, host = uri.host, port = uri.port) {
-            module(this@MockClient, "static${uri.port}")
+            module(this@MockClient, "static${url.replace("[:/.]".toRegex(), "")}")
         }.start(wait = false)
     }
 

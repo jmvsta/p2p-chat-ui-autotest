@@ -25,21 +25,6 @@ class Scenario02 : Scenario {
     private val mockServer = MockServer()
     private val hosts = arrayOf("http://localhost:8080", "http://localhost:8081")
 
-
-//    fun startChromeDriver(port: Int, userDataDir: String): WebDriver {
-//        val service = ChromeDriverService.Builder()
-//            .usingPort(port)
-//            .build()
-//        service.start()
-//
-//        val options = ChromeOptions()
-//        options.addArguments("--remote-debugging-port=${port + 1000}")
-//        options.addArguments("--user-data-dir=$userDataDir")
-//        options.addArguments("--profile-directory=Profile$port")
-//
-//        return ChromeDriver(service, options)
-//    }
-
     @BeforeAll
     fun setUp() {
         driver1 = ChromeDriver()
@@ -65,6 +50,8 @@ class Scenario02 : Scenario {
         mock2.contacts.addAll(mutableListOf(user1))
         mock2.chats.addAll(mutableListOf(chatTest2))
         Thread.sleep(6000)
+        driver1.get("http://localhost:8080")
+        driver2.get("http://localhost:8081")
     }
 
     @AfterAll
@@ -76,9 +63,6 @@ class Scenario02 : Scenario {
 
     @Test
     fun test() {
-        driver1.get("http://localhost:8080")
-        driver2.get("http://localhost:8081")
-
 
         Thread.sleep(10000)
     }

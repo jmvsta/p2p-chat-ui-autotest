@@ -63,7 +63,7 @@ class FileSystemService {
         if (!jsFile!!.exists()) {
             throw NotDirectoryException("no js file in build/resources/test/static$suffix/")
         }
-        val content = jsFile.readText().replace(baseUrlRegex, url)
+        val content = jsFile.readText().replace(baseUrlRegex, "\"$url\"")
         jsFile.writeText(content)
     }
 }
