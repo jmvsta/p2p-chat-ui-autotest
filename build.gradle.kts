@@ -19,14 +19,24 @@ dependencies {
     val platformVersion = "1.11.4"
     val shaVersion = "1.78"
 
+    implementation("io.ktor:ktor-server-netty:${ktorVersion}")
+    implementation("io.ktor:ktor-server-core:${ktorVersion}")
+    implementation("io.ktor:ktor-server-cors:${ktorVersion}")
+    implementation("io.ktor:ktor-server-content-negotiation:${ktorVersion}")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxVersion}")
+    implementation("io.ktor:ktor-server-call-logging:${ktorVersion}")
+    implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
+    implementation("org.bouncycastle:bcprov-jdk15to18:${shaVersion}")
+
     testImplementation(kotlin("test"))
     testImplementation("io.ktor:ktor-server-netty:$ktorVersion")
     testImplementation("io.ktor:ktor-server-core:$ktorVersion")
     testImplementation("io.ktor:ktor-server-cors:$ktorVersion")
     testImplementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     testImplementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion")
     testImplementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-websockets:$ktorVersion")
     testImplementation("org.bouncycastle:bcprov-jdk15to18:$shaVersion")
     testImplementation("org.seleniumhq.selenium:selenium-java:$seleniumVersion")
     testImplementation("org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion")
