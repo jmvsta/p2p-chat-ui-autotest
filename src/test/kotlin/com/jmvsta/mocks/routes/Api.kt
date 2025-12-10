@@ -1,6 +1,6 @@
 package com.jmvsta.mocks.routes
 
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.server.MockServer
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

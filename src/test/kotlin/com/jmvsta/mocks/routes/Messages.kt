@@ -2,7 +2,7 @@ package com.jmvsta.mocks.routes
 
 import com.jmvsta.entities.MessageDto
 import com.jmvsta.entities.MessagesListDto
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.server.MockServer
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route

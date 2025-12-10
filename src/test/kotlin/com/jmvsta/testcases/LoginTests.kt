@@ -2,8 +2,8 @@ package com.jmvsta.testcases
 
 import com.jmvsta.computeSHA3_512
 import com.jmvsta.entities.FormData
-import com.jmvsta.mocks.MockServer
-import com.jmvsta.mocks.modules.CallTracker
+import com.jmvsta.server.MockServer
+import com.jmvsta.modules.CallTracker
 import com.jmvsta.poms.Login
 import io.ktor.http.HttpMethod
 import kotlinx.serialization.json.Json

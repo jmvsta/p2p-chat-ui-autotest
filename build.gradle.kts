@@ -1,6 +1,8 @@
 plugins {
+    application
     kotlin("jvm") version "2.1.0"
     kotlin("plugin.serialization") version "2.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "com.jmvsta"
@@ -11,14 +13,15 @@ repositories {
 }
 
 dependencies {
-    val ktorVersion = "3.0.3"
+    val ktorVersion = "3.3.3"
     val kotlinxVersion = "1.7.3"
     val kotlinVersion = "2.1.0"
     val seleniumVersion = "4.27.0"
     val junitVersion = "5.11.4"
     val platformVersion = "1.11.4"
     val shaVersion = "1.78"
-
+    val prometheusVersion = "1.16.1"
+    implementation(kotlin("stdlib"))
     implementation("io.ktor:ktor-server-netty:${ktorVersion}")
     implementation("io.ktor:ktor-server-core:${ktorVersion}")
     implementation("io.ktor:ktor-server-cors:${ktorVersion}")
@@ -28,7 +31,10 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging:${ktorVersion}")
     implementation("io.ktor:ktor-server-websockets:${ktorVersion}")
     implementation("org.bouncycastle:bcprov-jdk15to18:${shaVersion}")
-
+    implementation("io.micrometer:micrometer-registry-prometheus:${prometheusVersion}")
+    implementation("io.ktor:ktor-server-metrics-micrometer:${ktorVersion}")
+    implementation("io.ktor:ktor-server-metrics-micrometer-jvm:${ktorVersion}")
+    implementation("ch.qos.logback:logback-classic:1.5.21")
     testImplementation(kotlin("test"))
     testImplementation("io.ktor:ktor-server-netty:$ktorVersion")
     testImplementation("io.ktor:ktor-server-core:$ktorVersion")
@@ -45,9 +51,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(17)
 }
@@ -57,5 +60,38 @@ sourceSets {
         resources {
             srcDirs("src/test/resources")
         }
+    }
+}
+
+application {
+    mainClass.set("com.jmvsta.MainKt")
+}
+
+//
+//tasks.withType<Jar> {
+//    manifest {
+//        attributes["Main-Class"] = application.mainClass.get()
+//    }
+//}
+
+//tasks.test {
+//    useJUnitPlatform()
+//}
+
+
+tasks{
+    test {
+        useJUnitPlatform()
+    }
+    jar {
+        manifest {
+            attributes["Main-Class"] = application.mainClass.get()
+        }
+    }
+    shadowJar {
+        archiveBaseName.set("app")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+        mergeServiceFiles()
     }
 }

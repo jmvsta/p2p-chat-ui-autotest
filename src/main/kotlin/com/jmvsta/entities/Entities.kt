@@ -33,9 +33,15 @@ data class Message(
             return Message(newId, sender, time, payload, read, received)
         }
 
-        fun toDto(message: MessageDto): Message {
+        fun fromTextMsgDto(message: MessageDto): Message {
             val newId = currentId++
             val payload = Payload("text", message.text, false, null)
+            return Message(newId, null, LocalDateTime.now().format(dateFormat), payload, read = false, received = false)
+        }
+
+        fun fromCallMsgDto(message: CallDto): Message {
+            val newId = currentId++
+            val payload = Payload("call", message.code ?: "", false, null)
             return Message(newId, null, LocalDateTime.now().format(dateFormat), payload, read = false, received = false)
         }
     }
@@ -46,6 +52,9 @@ data class FormData(val formData: MutableMap<String, String>, val files: Mutable
 
 @Serializable
 data class MessageDto(@SerialName("chat_id") val chatId: String, val text: String)
+
+@Serializable
+data class CallDto(@SerialName("chat_id") val chatId: String, val status: String, val code: String? = null)
 
 @Serializable
 data class StatusDto(@SerialName("log_prefix") val logPrefix: String, var inited: Boolean)

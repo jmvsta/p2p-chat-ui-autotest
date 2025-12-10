@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'jvm'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['server-manager:8080', 'server-manager:8081', 'server-manager:8082' ]

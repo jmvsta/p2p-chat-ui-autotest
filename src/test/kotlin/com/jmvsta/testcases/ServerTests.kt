@@ -2,8 +2,8 @@ package com.jmvsta.testcases
 
 import com.jmvsta.entities.Server
 import com.jmvsta.entities.StatusDto
-import com.jmvsta.mocks.MockServer
-import com.jmvsta.mocks.modules.CallTracker
+import com.jmvsta.server.MockServer
+import com.jmvsta.modules.CallTracker
 import com.jmvsta.poms.Servers
 import io.ktor.http.HttpMethod
 import org.junit.jupiter.api.BeforeEach

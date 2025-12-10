@@ -1,9 +1,8 @@
-package com.jmvsta.mocks.modules
+package com.jmvsta.modules
 
 import com.jmvsta.entities.FormData
-import com.jmvsta.mocks.MockServer
-import com.jmvsta.mocks.routes.apiRoute
-import com.jmvsta.mocks.routes.socketRoute
+import com.jmvsta.routes.apiRoute
+import com.jmvsta.server.IServer
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.serialization.kotlinx.json.*
@@ -12,45 +11,42 @@ import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.websocket.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import io.micrometer.prometheusmetrics.PrometheusConfig
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kotlinx.io.readByteArray
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.slf4j.event.Level
+import io.ktor.server.metrics.micrometer.MicrometerMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics
+import io.micrometer.core.instrument.binder.system.UptimeMetrics
 
-object CallTracker {
-    private val calls = mutableListOf<TrackedCall>()
+fun Application.module(mock: IServer) {
 
-    data class TrackedCall(
-        val method: HttpMethod,
-        val uri: String,
-        val queryParameters: Map<String, String>,
-        val body: String?
-    )
-
-    fun addCall(call: TrackedCall) {
-        calls.add(call)
-    }
-
-    fun getCalls(): List<TrackedCall> = calls.toList()
-
-    fun clearCalls() {
-        calls.clear()
-    }
-}
-
-fun Application.module(mock: MockServer = MockServer()) {
+    val registry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+    JvmMemoryMetrics().bindTo(registry)
+    JvmGcMetrics().bindTo(registry)
+    ProcessorMetrics().bindTo(registry)
+    JvmThreadMetrics().bindTo(registry)
+    UptimeMetrics().bindTo(registry)
 
     install(ContentNegotiation) {
         json()
     }
 
     install(CallLogging) {
-        level = Level.INFO
+        level = Level.ERROR
         filter { true }
+    }
+
+    install(MicrometerMetrics) {
+        this.registry = registry
     }
 
     install(CORS) {
@@ -67,9 +63,6 @@ fun Application.module(mock: MockServer = MockServer()) {
         allowMethod(HttpMethod.Patch)
         allowMethod(HttpMethod.Delete)
     }
-
-    install(WebSockets)
-
 
     intercept(ApplicationCallPipeline.Monitoring) {
         val method = call.request.httpMethod
@@ -127,7 +120,9 @@ fun Application.module(mock: MockServer = MockServer()) {
     }
 
     routing {
-        socketRoute(mock)
+        get("/metrics") {
+            call.respondText(registry.scrape())
+        }
         apiRoute(mock)
     }
 }

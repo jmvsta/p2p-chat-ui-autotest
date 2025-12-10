@@ -1,8 +1,8 @@
-package com.jmvsta.mocks.routes
+package com.jmvsta.routes
 
 import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.FormData
-import com.jmvsta.mocks.MockServer
+import com.jmvsta.server.IServer
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
@@ -15,7 +15,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
-fun Route.settingsRoute(mock: MockServer) {
+fun Route.settingsRoute(mock: IServer) {
     route("/settings") {
         get("/me/") {
             val body = call.receiveText()

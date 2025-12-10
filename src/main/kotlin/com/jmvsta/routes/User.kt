@@ -1,4 +1,4 @@
-package com.jmvsta.mocks.routes
+package com.jmvsta.routes
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receiveText

@@ -1,5 +1,7 @@
 package com.jmvsta.mocks
 
+import com.jmvsta.server.MockServer
+
 object MockServerManager {
 
     private val mockServers: MutableMap<Int, MockServer> = HashMap()

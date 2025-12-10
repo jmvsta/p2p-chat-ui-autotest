@@ -1,7 +1,7 @@
 package com.jmvsta.scenarios
 
-import com.jmvsta.mocks.MockServer
-import com.jmvsta.mocks.MockServerManager
+import com.jmvsta.server.MockServer
+import com.jmvsta.server.MockServerManager
 import com.jmvsta.testcases.LoginTests
 import com.jmvsta.testcases.ServerTests
 import org.junit.jupiter.api.AfterAll

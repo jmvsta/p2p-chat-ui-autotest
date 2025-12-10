@@ -4,7 +4,7 @@ import com.jmvsta.entities.ExtUser
 import com.jmvsta.entities.Message
 import com.jmvsta.entities.Server
 import com.jmvsta.entities.StatusDto
-import com.jmvsta.mocks.modules.module
+import com.jmvsta.modules.module
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -32,7 +32,7 @@ class MockServer(private val port: Int = 8080) {
 }
 
 fun main() {
-    val mockServer = MockServer(8080)
+    val mockServer = com.jmvsta.server.MockServer(8080)
     mockServer.start()
 
     println("Mock server is running on port 8080. Press Ctrl+C to stop.")
